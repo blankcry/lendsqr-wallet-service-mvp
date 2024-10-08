@@ -1,11 +1,29 @@
 {
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
-    "rootDir": ".",
-    "outDir": "build"
+    "target": "ES2020",                // Target modern JavaScript
+    "module": "commonjs",               // Use commonjs module system for Node.js
+    "esModuleInterop": true,            // Enable compatibility for CommonJS and ES6 modules
+    "forceConsistentCasingInFileNames": true, // Ensure consistent casing in file imports
+    "strict": true,                     // Enable all strict type checking options
+    "skipLibCheck": true,               // Skip type checking of declaration files
+    "noImplicitAny": true,              // Raise errors on expressions and declarations with `any` type
+    "outDir": "build",                  // Output folder for compiled files
+    "rootDir": ".",                     // Specify the root folder of your source files
+    "resolveJsonModule": true,          // Allow importing JSON files as modules
+    "sourceMap": true,                  // Enable source map generation for debugging
+    "baseUrl": ".",                     // Base URL for module resolution
+    "paths": {
+      "*": ["node_modules/*"],          // Resolve paths to node_modules
+      "@src/*": ["src/*"]               // Example path alias for src folder
+    }
   },
   "include": [
-    "src/**/*.ts",
-    "test/**/*.ts"
+    "src/**/*.ts",                       // Include TypeScript files from src folder
+    "test/**/*.ts"                       // Include test files
+  ],
+  "exclude": [
+    "node_modules",                      // Exclude node_modules folder
+    "build"                              // Exclude the build output folder
   ]
 }
