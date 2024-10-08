@@ -1,12 +1,9 @@
-import Knex from "knex";
-import config from "../../config/server"
+import Knex from 'knex';
+import config from '../../config/server';
 
 const {
-  db: {
-    client,
-    connectionUrl
-  }
-} = config
+  db: {client, connectionUrl},
+} = config;
 
 const knex = Knex({
   client,

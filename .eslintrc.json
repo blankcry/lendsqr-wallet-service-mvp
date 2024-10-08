@@ -4,9 +4,11 @@
     "ecmaVersion": 2020, // Allows for parsing modern ECMAScript features
     "sourceType": "module" // Allows for the use of imports
   },
-  "rules": {
-    // Custom rules (if any)
-  },
+  "rules":  {
+    "n/no-unpublished-import": ["off", {
+        "ignoreTypeImport": true
+    }]
+},
   "settings": {
     "import/resolver": {
       "node": {
