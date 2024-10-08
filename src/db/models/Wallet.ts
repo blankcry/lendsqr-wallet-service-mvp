@@ -1,7 +1,7 @@
 import {BaseModel} from './BaseModel';
 import {User} from './User';
 
-export default class Wallet extends BaseModel {
+export class Wallet extends BaseModel {
   static get tableName() {
     return 'wallets'; // Table name in the database
   }
@@ -10,17 +10,20 @@ export default class Wallet extends BaseModel {
     return 'id';
   }
 
+  id!: number;
+  user_id!: number;
+  balance!: number;
+  currency!: string;
+
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['userId', 'balance', 'currency'],
+      required: ['user_id', 'balance', 'currency'],
       properties: {
         id: {type: 'integer'},
-        userId: {type: 'integer'},
+        user_id: {type: 'integer'},
         balance: {type: 'number', minimum: 0},
         currency: {type: 'string', enum: ['USD', 'EUR', 'KES', 'UGX']},
-        created_at: {type: 'string', format: 'date-time'},
-        updated_at: {type: 'string', format: 'date-time'},
       },
     };
   }
@@ -30,7 +33,7 @@ export default class Wallet extends BaseModel {
       relation: BaseModel.BelongsToOneRelation,
       modelClass: User,
       join: {
-        from: 'wallets.userId',
+        from: 'wallets.user_id',
         to: 'users.id',
       },
     },

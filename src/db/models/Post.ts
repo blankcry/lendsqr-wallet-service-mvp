@@ -1,7 +1,7 @@
 import {BaseModel} from './BaseModel';
 import {User} from './User';
 
-class Post extends BaseModel {
+export class Post extends BaseModel {
   static get tableName() {
     return 'posts'; // Table name in the database
   }
@@ -21,7 +21,7 @@ class Post extends BaseModel {
       amount: {type: 'integer'},
       status: {type: 'string', enum: ['PENDING', 'SUCCESS', 'FAILED']},
       content: {type: 'string', minLength: 1},
-      userId: {type: 'integer'},
+      user_id: {type: 'integer'},
     },
   };
 
@@ -31,11 +31,9 @@ class Post extends BaseModel {
       relation: BaseModel.BelongsToOneRelation,
       modelClass: User, // Reference to the User model
       join: {
-        from: 'posts.userId',
+        from: 'posts.user_id',
         to: 'users.id',
       },
     },
   };
 }
-
-export default Post;

@@ -1,3 +1,4 @@
+import userService from '@src/modules/user/user.service';
 import {NextFunction, Request, Response} from 'express';
 import {isString} from 'lodash';
 
@@ -23,7 +24,10 @@ export const validateTokem = async (
 
     // Get user profile via token
 
+    const user = await userService.findUserViaToken(secret);
+
     // Inject it into request object
+    request.user = user;
 
     return next();
   } catch (error) {

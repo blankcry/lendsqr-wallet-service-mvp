@@ -9,6 +9,11 @@ export class User extends BaseModel {
     return 'id';
   }
 
+  id!: number;
+  name!: string;
+  email!: string;
+  token!: string;
+
   static jsonSchema = {
     type: 'object',
     required: ['name', 'email'],
@@ -26,7 +31,7 @@ export class User extends BaseModel {
       modelClass: 'Post', // Reference to another model
       join: {
         from: 'users.id',
-        to: 'posts.userId',
+        to: 'posts.user_id',
       },
     },
   };
