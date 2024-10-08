@@ -68,3 +68,11 @@ export class UnprocessableError extends SystemError {
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
   }
 }
+
+export class GatewayError extends SystemError {
+  constructor(message?: string) {
+    super('gateway-error', message); // 'Error' breaks prototype chain here
+    this.name = 'GatewayError';
+    Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
+  }
+}

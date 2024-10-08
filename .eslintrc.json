@@ -1,3 +1,17 @@
 {
-  "extends": "./node_modules/gts/"
+  "extends": "./node_modules/gts/",
+  "parserOptions": {
+    "ecmaVersion": 2020, // Allows for parsing modern ECMAScript features
+    "sourceType": "module" // Allows for the use of imports
+  },
+  "rules": {
+    // Custom rules (if any)
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".ts"] // Resolve .js and .ts extensions
+      }
+    }
+  }
 }
