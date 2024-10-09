@@ -1,11 +1,8 @@
-import {Router, Request, Response} from 'express';
+import userController from '../modules/user/user.controller';
+import {Router, Application} from 'express';
 
-const router: Router = Router();
+const router = Router();
 
-router.all('/', async (_req: Request, res: Response) => {
-  res.json({
-    message: 'User Resoource @Simple Wallet API.',
-  });
-});
+router.post('/', userController.create as Application);
 
 export default router;

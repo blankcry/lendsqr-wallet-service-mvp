@@ -1,6 +1,7 @@
-import configuration from '@src/config/business';
+import configuration from '../../config/business';
 import {Wallet} from '../../db/models';
 import {Transaction} from 'objection';
+import {NotFoundError} from '../../error';
 
 class WalletService {
   async createWallet(user_id: number, currency: string, trx: Transaction) {
@@ -14,6 +15,14 @@ class WalletService {
   async handleWalletCreation(accountId: number, trx: Transaction) {
     const baseCurrency = configuration.platform.supported.currency;
     return this.createWallet(accountId, baseCurrency, trx);
+  }
+
+  async getWallet(user_id: number) {
+    const wallet = await Wallet.query().where('user_id', user_id).first();
+    if (!wallet) {
+      throw new NotFoundError("Sorry Can't find user wallet");
+    }
+    return wallet;
   }
 }
 

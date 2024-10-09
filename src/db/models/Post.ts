@@ -1,7 +1,7 @@
-import {BaseModel} from './BaseModel';
+import {BaseModel as Model} from './BaseModel';
 import {User} from './User';
 
-export class Post extends BaseModel {
+export class Post extends Model {
   static get tableName() {
     return 'posts'; // Table name in the database
   }
@@ -12,26 +12,50 @@ export class Post extends BaseModel {
 
   static jsonSchema = {
     type: 'object',
-    required: ['ref', 'balanceBefore', 'user_id'],
+    required: [
+      'ref',
+      'amount',
+      'type',
+      'treatment',
+      'balanceBefore',
+      'balanceAfter',
+      'status',
+      'recipient_id',
+      'initiated_by',
+      'wallet_id',
+    ],
 
     properties: {
       id: {type: 'integer'},
       ref: {type: 'string', minLength: 1, maxLength: 255},
-      treatment: {type: 'string', minLength: 1, maxLength: 255},
       amount: {type: 'integer'},
+      type: {type: 'string', enum: ['transfer', 'fund', 'withdraw']},
+      treatment: {type: 'string', enum: ['credit', 'debit']},
+      balanceBefore: {type: 'integer'},
+      balanceAfter: {type: 'integer'},
       status: {type: 'string', enum: ['PENDING', 'SUCCESS', 'FAILED']},
-      content: {type: 'string', minLength: 1},
-      user_id: {type: 'integer'},
+      recipient_id: {type: 'integer'},
+      initiated_by: {type: 'integer'},
+      wallet_id: {type: 'integer'},
+      remark: {type: 'string'},
     },
   };
 
   // Define the relationship with the User model
   static relationMappings = {
-    user: {
-      relation: BaseModel.BelongsToOneRelation,
-      modelClass: User, // Reference to the User model
+    initiator: {
+      relation: Model.BelongsToOneRelation,
+      modelClass: User,
       join: {
-        from: 'posts.user_id',
+        from: 'posts.initiated_by',
+        to: 'users.id',
+      },
+    },
+    recipient: {
+      relation: Model.BelongsToOneRelation,
+      modelClass: User,
+      join: {
+        from: 'posts.recipient_id',
         to: 'users.id',
       },
     },

@@ -1,4 +1,4 @@
-import userService from '@src/modules/user/user.service';
+import userService from '../modules/user/user.service';
 import {NextFunction, Request, Response} from 'express';
 import {isString} from 'lodash';
 
@@ -8,7 +8,7 @@ import {isString} from 'lodash';
  * @param {Response} response The Express response object.
  * @param {NextFunction} next The next middleware function in the stack.
  */
-export const validateTokem = async (
+export const validateToken = async (
   request: Request,
   response: Response,
   next: NextFunction

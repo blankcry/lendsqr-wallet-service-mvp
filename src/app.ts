@@ -3,7 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
 
-import routes from './routes';
+import router from './routes/index.routes';
 
 const expressApp: Express = express();
 
@@ -17,6 +17,6 @@ expressApp.use(bodyParser.urlencoded({limit: '20mb', extended: true}));
 // Enables Cross-origin requests to server
 expressApp.use(cors());
 
-expressApp.use(routes);
+expressApp.use(router);
 
 export default expressApp;

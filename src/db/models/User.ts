@@ -1,4 +1,6 @@
 import {BaseModel} from './BaseModel';
+import {Post} from './Post';
+import {Wallet} from './Wallet';
 
 export class User extends BaseModel {
   static get tableName() {
@@ -12,6 +14,7 @@ export class User extends BaseModel {
   id!: number;
   name!: string;
   email!: string;
+  password!: string;
   token!: string;
 
   static jsonSchema = {
@@ -21,6 +24,7 @@ export class User extends BaseModel {
       id: {type: 'integer'},
       name: {type: 'string', minLength: 1, maxLength: 255},
       email: {type: 'string', minLength: 1, maxLength: 255},
+      password: {type: 'string', minLength: 1, maxLength: 255},
       token: {type: 'string'},
     },
   };
@@ -28,10 +32,18 @@ export class User extends BaseModel {
   static relationMappings = {
     posts: {
       relation: BaseModel.HasManyRelation,
-      modelClass: 'Post', // Reference to another model
+      modelClass: Post, // Reference to another model
       join: {
         from: 'users.id',
-        to: 'posts.user_id',
+        to: 'posts.initiated_by',
+      },
+    },
+    wallet: {
+      relation: BaseModel.HasOneRelation,
+      modelClass: Wallet, // Reference to another model
+      join: {
+        from: 'users.id',
+        to: 'wallets.user_id',
       },
     },
   };
