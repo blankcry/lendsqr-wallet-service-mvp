@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import {SystemError} from '../error';
-import {Request, Response} from 'express';
+import {NextFunction, Request, Response} from 'express';
 
 /**
  * Middleware that catches all unknown routes.
@@ -26,7 +26,8 @@ export const NotFoundErrorHandler = async (
 export const GlobalErrorHandler = async (
   error: unknown,
   _request: Request,
-  response: Response
+  response: Response,
+  next: NextFunction
 ) => {
   console.log('I didnt get here');
   if (error instanceof Joi.ValidationError) {

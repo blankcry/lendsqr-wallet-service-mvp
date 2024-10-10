@@ -15,9 +15,8 @@ export const validateToken = async (
 ) => {
   try {
     const secret = request.headers['Authorization'];
-    console.log('Token', secret);
     if (!secret || !isString(secret)) {
-      return response.status(400).json({
+      return response.status(401).json({
         message: 'Please supply a user token.',
       });
     }
