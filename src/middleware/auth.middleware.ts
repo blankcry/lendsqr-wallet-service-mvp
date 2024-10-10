@@ -14,18 +14,41 @@ export const validateToken = async (
   next: NextFunction
 ) => {
   try {
-    const secret = request.headers['Authorization'];
-    if (!secret || !isString(secret)) {
+    const authHeader =
+      request.headers['authorization'] || request.headers['Authorization'];
+
+    // Ensure the Authorization header is present and is a string
+    if (!authHeader || !isString(authHeader)) {
       return response.status(401).json({
-        message: 'Please supply a user token.',
+        message: 'Authorization header is missing or malformed.',
+      });
+    }
+
+    // Ensure the token follows the "Bearer <token>" format
+    const parts = authHeader.split(' ');
+    if (parts.length !== 2 || parts[0].toLowerCase() !== 'bearer') {
+      return response.status(401).json({
+        message: 'Token format is incorrect. Expected "Bearer <token>".',
+      });
+    }
+
+    const token = parts[1];
+    if (!token) {
+      return response.status(401).json({
+        message: 'Token not found in the authorization header.',
       });
     }
 
     // Get user profile via token
+    const user = await userService.findUserViaToken(token);
 
-    const user = await userService.findUserViaToken(secret);
+    if (!user) {
+      return response.status(401).json({
+        message: 'Invalid or expired token.',
+      });
+    }
 
-    // Inject it into request object
+    // Attach user to the request object
     request.user = user;
 
     return next();

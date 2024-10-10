@@ -23,7 +23,7 @@ export class Wallet extends BaseModel {
         id: {type: 'integer'},
         user_id: {type: 'integer'},
         balance: {type: 'number', minimum: 0},
-        currency: {type: 'string', enum: ['USD', 'EUR', 'KES', 'UGX']},
+        currency: {type: 'string', enum: ['USD', 'EUR', 'KES', 'UGX', 'NGN']},
       },
     };
   }
