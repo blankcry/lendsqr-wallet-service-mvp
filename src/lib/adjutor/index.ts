@@ -20,7 +20,9 @@ class AdjutorAPI {
     });
 
     this.api.interceptors.response.use(
-      response => response,
+      response => {
+        return response;
+      },
       (error: AxiosError<AdjutorErrorResponseI>) => {
         // If error doesnt have response most likely network
         if (!error.response) {
@@ -42,7 +44,9 @@ class AdjutorAPI {
               message: data.message,
               data: null,
             };
-            return payload;
+            return {
+              data: payload,
+            };
           }
           const {message} = data;
           return Promise.reject(new GatewayError(message));

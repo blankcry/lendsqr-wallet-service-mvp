@@ -1,3 +1,4 @@
+import Joi from 'joi';
 import {SystemError} from '../error';
 import {Request, Response} from 'express';
 
@@ -27,6 +28,13 @@ export const GlobalErrorHandler = async (
   _request: Request,
   response: Response
 ) => {
+  console.log('I didnt get here');
+  if (error instanceof Joi.ValidationError) {
+    return response.status(400).json({
+      status: 'validation-error',
+      message: error.message,
+    });
+  }
   if (error instanceof SystemError) {
     switch (error.name) {
       case 'BadRequestError':
