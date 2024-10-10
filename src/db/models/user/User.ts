@@ -1,6 +1,6 @@
-import {BaseModel} from './BaseModel';
-import {Post} from './Post';
-import {Wallet} from './Wallet';
+import {BaseModel} from '../BaseModel';
+import {Post} from '../post/Post';
+import {Wallet} from '../wallet/Wallet';
 
 export class User extends BaseModel {
   static get tableName() {

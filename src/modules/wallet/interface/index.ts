@@ -6,6 +6,17 @@ export enum PostTypeEnum {
   Fund = 'fund',
 }
 
+export enum PostTreatmentEnum {
+  Credit = 'credit',
+  Debit = 'debit',
+}
+
+export enum PostStatusEnum {
+  Pending = 'PENDING',
+  Success = 'SUCCESS',
+  Failed = 'FAILED',
+}
+
 export type PostHandler = (
   amount: number,
   senderId: number,

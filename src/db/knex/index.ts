@@ -9,6 +9,10 @@ const knex = Knex({
   client,
   connection: connectionUrl,
   debug: true,
+  migrations: {
+    directory: './migrations',
+    extension: 'ts', // Use TypeScript files for migrations
+  },
 });
 
 export default knex;

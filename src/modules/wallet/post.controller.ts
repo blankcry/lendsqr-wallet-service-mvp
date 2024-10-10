@@ -20,9 +20,10 @@ export default {
 
       const value: PostPayloadDTO =
         await WalletPostPayloadSchema.validateAsync(payload);
-      const data = await postsService.handlePost();
+      const data = await postsService.handlePost(value);
       return response.json({
         message: `${capitalize(type)} Initiated Successfully`,
+        data,
       });
     } catch (error) {
       return next(error);

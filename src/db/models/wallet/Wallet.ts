@@ -1,5 +1,5 @@
-import {BaseModel} from './BaseModel';
-import {User} from './User';
+import {BaseModel} from '../BaseModel';
+import {User} from '../user/User';
 
 export class Wallet extends BaseModel {
   static get tableName() {

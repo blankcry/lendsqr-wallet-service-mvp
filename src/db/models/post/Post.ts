@@ -1,7 +1,22 @@
-import {BaseModel as Model} from './BaseModel';
-import {User} from './User';
+import {
+  PostTypeEnum,
+  PostTreatmentEnum,
+  PostStatusEnum,
+} from '@src/modules/wallet/interface';
+import {BaseModel as Model} from '../BaseModel';
+import {User} from '../user/User';
+import {PostCreationI} from './interface';
 
-export class Post extends Model {
+export class Post extends Model implements PostCreationI {
+  id!: number;
+  ref!: string;
+  amount!: number;
+  type!: PostTypeEnum;
+  treatment!: PostTreatmentEnum;
+  status!: PostStatusEnum;
+  recipient_id!: number;
+  initiated_by!: number;
+  wallet_id!: number;
   static get tableName() {
     return 'posts'; // Table name in the database
   }
@@ -17,8 +32,6 @@ export class Post extends Model {
       'amount',
       'type',
       'treatment',
-      'balanceBefore',
-      'balanceAfter',
       'status',
       'recipient_id',
       'initiated_by',
@@ -31,8 +44,6 @@ export class Post extends Model {
       amount: {type: 'integer'},
       type: {type: 'string', enum: ['transfer', 'fund', 'withdraw']},
       treatment: {type: 'string', enum: ['credit', 'debit']},
-      balanceBefore: {type: 'integer'},
-      balanceAfter: {type: 'integer'},
       status: {type: 'string', enum: ['PENDING', 'SUCCESS', 'FAILED']},
       recipient_id: {type: 'integer'},
       initiated_by: {type: 'integer'},

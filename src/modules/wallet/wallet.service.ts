@@ -17,8 +17,11 @@ class WalletService {
     return this.createWallet(accountId, baseCurrency, trx);
   }
 
-  async getWallet(user_id: number) {
-    const wallet = await Wallet.query().where('user_id', user_id).first();
+  async getWallet(user_id: number, trx?: Transaction) {
+    const wallet = await Wallet.query(trx)
+      .where('user_id', user_id)
+      .first()
+      .forUpdate();
     if (!wallet) {
       throw new NotFoundError("Sorry Can't find user wallet");
     }
