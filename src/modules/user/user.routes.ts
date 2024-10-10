@@ -7,6 +7,6 @@ const router = Router();
 
 router.post('/', userController.create as Application);
 router.use(validateToken as Application);
-router.get('/', contactController.get as Application);
+router.get('/contacts', contactController.get as Application);
 
 export default router;
