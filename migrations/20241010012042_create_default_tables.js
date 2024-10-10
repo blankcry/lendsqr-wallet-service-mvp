@@ -2,7 +2,7 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function (knex) {
+exports.up = async function (knex) {
   return knex.schema
     .createTableIfNotExists('users', table => {
       table.increments('id').primary();
@@ -16,7 +16,7 @@ exports.up = function (knex) {
       table.increments('id').primary();
       table.integer('user_id').unsigned().notNullable();
       table.decimal('balance', 10, 2).notNullable();
-      table.string('currency', 10).notNullable().enum(['USD', 'NGN']);
+      table.string('currency', 10).notNullable();
       table.timestamps(true, true); // Add created_at and updated_at columns
 
       table.foreign('user_id').references('id').on('users');
@@ -25,15 +25,9 @@ exports.up = function (knex) {
       table.increments('id').primary();
       table.string('ref', 255).notNullable().unique();
       table.integer('amount').notNullable();
-      table
-        .string('type', 45)
-        .notNullable()
-        .enum(['transfer', 'fund', 'withdraw']);
-      table.string('treatment', 45).notNullable().enum(['credit', 'debit']);
-      table
-        .string('status', 45)
-        .notNullable()
-        .enum(['PENDING', 'SUCCESS', 'FAILED']);
+      table.string('type', 45).notNullable();
+      table.string('treatment', 45).notNullable();
+      table.string('status', 45).notNullable();
       table.integer('recipient_id').unsigned().notNullable();
       table.integer('initiated_by').unsigned().notNullable();
       table.integer('wallet_id').unsigned().notNullable();

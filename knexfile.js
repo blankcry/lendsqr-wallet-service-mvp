@@ -7,7 +7,7 @@ dotenv.config();
  */
 module.exports = {
   development: {
-    client: 'mysql2',
+    client: process.env.DB_DIALECT,
     connection: process.env.DB_URL,
     pool: {
       min: 2,
