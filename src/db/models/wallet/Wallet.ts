@@ -1,5 +1,6 @@
 import {BaseModel} from '../BaseModel';
 import {User} from '../user/User';
+import {WalletLedger} from './WalletLedger';
 
 export class Wallet extends BaseModel {
   static get tableName() {
@@ -22,7 +23,7 @@ export class Wallet extends BaseModel {
       properties: {
         id: {type: 'integer'},
         user_id: {type: 'integer'},
-        balance: {type: 'number', minimum: 0},
+        balance: {type: 'number'},
         currency: {type: 'string', enum: ['USD', 'EUR', 'KES', 'UGX', 'NGN']},
       },
     };
@@ -35,6 +36,14 @@ export class Wallet extends BaseModel {
       join: {
         from: 'wallets.user_id',
         to: 'users.id',
+      },
+    },
+    ledger: {
+      relation: BaseModel.HasManyRelation,
+      modelClass: WalletLedger,
+      join: {
+        from: 'wallets.id',
+        to: 'wallet_ledgers.wallet_id',
       },
     },
   };

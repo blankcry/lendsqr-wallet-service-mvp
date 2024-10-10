@@ -8,8 +8,8 @@ exports.up = async function (knex) {
       table.increments('id').primary();
       table.string('name', 255).notNullable();
       table.string('email', 255).notNullable().unique();
-      table.string('password', 255).notNullable();
-      table.string('token');
+      table.string('password', 255).nullable();
+      table.string('token').notNullable().unique();
       table.timestamps(true, true); // Add created_at and updated_at columns
     })
     .createTableIfNotExists('wallets', table => {

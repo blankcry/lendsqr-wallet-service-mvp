@@ -9,7 +9,7 @@ export class WalletLedger extends BaseModel implements WalletLedgerCreationI {
   balanceBefore!: number;
   balanceAfter!: number;
   static get tableName() {
-    return 'wallets'; // Table name in the database
+    return 'wallet_ledgers'; // Table name in the database
   }
 
   static get idColumn() {

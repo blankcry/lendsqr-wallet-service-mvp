@@ -1,6 +1,8 @@
 import Joi from 'joi';
 import {SystemError} from '../error';
 import {NextFunction, Request, Response} from 'express';
+import {BaseModel} from '@src/db/models/BaseModel';
+import {ValidationError} from 'objection';
 
 /**
  * Middleware that catches all unknown routes.
@@ -29,7 +31,12 @@ export const GlobalErrorHandler = async (
   response: Response,
   next: NextFunction
 ) => {
-  console.log('I didnt get here');
+  if (error instanceof ValidationError) {
+    return response.status(400).json({
+      status: 'validation-error',
+      message: error.message,
+    });
+  }
   if (error instanceof Joi.ValidationError) {
     return response.status(400).json({
       status: 'validation-error',
@@ -38,6 +45,7 @@ export const GlobalErrorHandler = async (
   }
   if (error instanceof SystemError) {
     switch (error.name) {
+      case 'UnprocessableError':
       case 'BadRequestError':
         return response.status(400).json({
           status: error.code,
@@ -71,7 +79,7 @@ export const GlobalErrorHandler = async (
   // Check if Error is DB Error
 
   return response.status(500).json({
-    status: 'not-found',
-    message: 'Resource not found',
+    status: 'server-error',
+    message: 'Something went wrong,Server Error',
   });
 };

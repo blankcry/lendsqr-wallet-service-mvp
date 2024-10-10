@@ -31,17 +31,17 @@ class PostService {
       throw new UnprocessableError('Unknown Post Handler');
     }
 
-    const post = await handler(amount, initiated_by, recipient_id);
+    const post = await handler.call(this, amount, initiated_by, recipient_id);
     return post;
   }
 
   async handleFundPost(amount: number, initiated_by: number) {
-    const trx = await Post.startTransaction();
+    const trx = await Wallet.startTransaction();
 
     // Get the wallet of the user initiating the fund operation
-    const wallet = await walletService.getWallet(initiated_by, trx);
+    const wallet = await walletService.getUserWallet(initiated_by);
 
-    const fundTransaction = await this.createPostTransaction(
+    const fundPost = await this.createPostTransaction(
       amount,
       initiated_by,
       initiated_by,
@@ -53,10 +53,10 @@ class PostService {
     return this.executeTransaction(
       trx,
       async () => {
-        return this.handleWalletTreatment(wallet, fundTransaction, trx);
+        return this.handleWalletTreatment(wallet, fundPost, trx);
       },
       async () => {
-        await fundTransaction.$query().update({status: PostStatusEnum.Failed});
+        await fundPost.$query().patch({status: PostStatusEnum.Failed});
       }
     );
   }
@@ -64,7 +64,7 @@ class PostService {
     const trx = await Post.startTransaction();
 
     // Get the wallet of the user initiating the withdrawal
-    const wallet = await walletService.getWallet(initiated_by, trx);
+    const wallet = await walletService.getUserWallet(initiated_by);
     const withdrawTransaction = await this.createPostTransaction(
       amount,
       initiated_by,
@@ -82,7 +82,7 @@ class PostService {
       async () => {
         await withdrawTransaction
           .$query()
-          .update({status: PostStatusEnum.Failed});
+          .patch({status: PostStatusEnum.Failed});
       }
     );
   }
@@ -108,7 +108,7 @@ class PostService {
     amount: number
   ): Promise<Post> {
     const trx = await Post.startTransaction();
-    const senderWallet = await walletService.getWallet(initiated_by, trx);
+    const senderWallet = await walletService.getUserWallet(initiated_by);
 
     const debitTransaction = await this.createPostTransaction(
       amount,
@@ -124,7 +124,7 @@ class PostService {
         return this.handleWalletTreatment(senderWallet, debitTransaction, trx);
       },
       async () => {
-        await debitTransaction.$query().update({status: PostStatusEnum.Failed});
+        await debitTransaction.$query().patch({status: PostStatusEnum.Failed});
       }
     );
   }
@@ -135,7 +135,7 @@ class PostService {
       throw new UnprocessableError("Sender Wallet hasn't been debited");
     }
     const trx = await Wallet.startTransaction();
-    const recipientWallet = await walletService.getWallet(recipient_id, trx);
+    const recipientWallet = await walletService.getUserWallet(recipient_id);
 
     const creditTransaction = await this.createPostTransaction(
       amount,
@@ -155,9 +155,7 @@ class PostService {
         );
       },
       async () => {
-        await creditTransaction
-          .$query()
-          .update({status: PostStatusEnum.Failed});
+        await creditTransaction.$query().patch({status: PostStatusEnum.Failed});
       }
     );
   }
@@ -173,25 +171,28 @@ class PostService {
     if (treatment === PostTreatmentEnum.Debit) {
       amount = -amount;
     }
-    const balanceAfter = wallet.balance + amount;
+    const lockedWallet = await walletService.getWriteWallet(wallet.id, trx);
+    const balanceBefore = Number(lockedWallet.balance);
+    const balanceAfter = balanceBefore + Number(amount);
 
     // Create Ledger Record
     const ledgerPayload: WalletLedgerCreationI = {
       post_id: post.id,
       wallet_id: wallet.id,
-      balanceBefore: wallet.balance,
+      balanceBefore,
       balanceAfter,
     };
     await WalletLedger.query(trx).insert(ledgerPayload);
-    await wallet.$query(trx).update({
+    await lockedWallet.$query(trx).patch({
       balance: balanceAfter,
     });
     // Check if balance less than 0 throw unproceesable error; Check here to showcase a failure point and hoe rollback works
     if (balanceAfter < 0) {
-      throw new UnprocessableError('Insufficient Amount');
+      throw new UnprocessableError('Insufficient Wallet Balance');
     }
+    trx.commit();
     post.status = PostStatusEnum.Success;
-    await post.$query().update({status: PostStatusEnum.Success});
+    await post.$query().patch({status: PostStatusEnum.Success});
     return post;
   }
 
@@ -214,7 +215,8 @@ class PostService {
       wallet_id,
     };
 
-    return Post.query().insert(transactionPayload);
+    const post = await Post.query().insert(transactionPayload);
+    return post;
   }
 
   private async executeTransaction(
@@ -227,8 +229,8 @@ class PostService {
       await trx.commit();
       return result;
     } catch (error) {
-      await onErrorCallback();
       await trx.rollback();
+      await onErrorCallback();
       throw error;
     }
   }

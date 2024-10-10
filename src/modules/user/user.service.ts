@@ -37,6 +37,10 @@ class UserService {
     }
     return user;
   }
+
+  async getContacts(user_id: number) {
+    return User.query().whereNot('id', user_id).select(['id', 'name', 'email']);
+  }
 }
 
 export default new UserService();

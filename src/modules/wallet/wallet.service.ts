@@ -17,11 +17,19 @@ class WalletService {
     return this.createWallet(accountId, baseCurrency, trx);
   }
 
-  async getWallet(user_id: number, trx?: Transaction) {
-    const wallet = await Wallet.query(trx)
-      .where('user_id', user_id)
-      .first()
-      .forUpdate();
+  // Wallet to fetch for read purposes
+  async getUserWallet(user_id: number) {
+    const wallet = await Wallet.query().where('user_id', user_id).first();
+
+    if (!wallet) {
+      throw new NotFoundError("Sorry Can't find user wallet");
+    }
+    return wallet;
+  }
+
+  async getWriteWallet(id: number, trx: Transaction) {
+    const wallet = await Wallet.query(trx).findById(id).forUpdate();
+
     if (!wallet) {
       throw new NotFoundError("Sorry Can't find user wallet");
     }
