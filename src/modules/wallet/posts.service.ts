@@ -142,7 +142,7 @@ class PostService {
       initiated_by,
       recipient_id,
       PostTypeEnum.Transfer,
-      PostTreatmentEnum.Debit,
+      PostTreatmentEnum.Credit,
       recipientWallet.id
     );
     return this.executeTransaction(

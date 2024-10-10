@@ -39,7 +39,10 @@ class UserService {
   }
 
   async getContacts(user_id: number) {
-    return User.query().whereNot('id', user_id).select(['id', 'name', 'email']);
+    // Include token to easily switch users
+    return User.query()
+      .whereNot('id', user_id)
+      .select(['id', 'name', 'email', 'token']);
   }
 }
 

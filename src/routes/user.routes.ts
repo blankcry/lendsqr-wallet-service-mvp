@@ -1,7 +1,7 @@
 import {Router, Application} from 'express';
 import userController from '../modules/user/user.controller';
 import {validateToken} from '../middleware/auth.middleware';
-import contactController from '@src/modules/user/contact.controller';
+import contactController from '../modules/user/contact.controller';
 
 const router = Router();
 
