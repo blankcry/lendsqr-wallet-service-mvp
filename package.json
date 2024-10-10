@@ -1,4 +1,8 @@
 {
+  "name": "api_wallet_service",
+  "version": "1.0.0",
+  "description": "Assestment Project",
+  "main": "server.ts",
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
     "@types/cors": "^2.8.17",
@@ -9,12 +13,10 @@
     "@types/node": "20.12.7",
     "@types/uuid": "^10.0.0",
     "gts": "^5.3.1",
-    "knex": "^3.1.0",
     "mysql2": "^3.11.3",
     "nodemon": "^3.1.7",
-    "objection": "^3.1.5",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.1.6"
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
   },
   "scripts": {
     "lint": "gts lint",
@@ -26,19 +28,22 @@
     "posttest": "npm run lint",
     "build": "tsc --build tsconfig.json",
     "start:dev": "nodemon --config nodemon.json",
-    "start": "node dist/src/server.js"
+    "start": "node build/src/server.js"
   },
   "dependencies": {
     "axios": "^1.7.7",
-    "body-parser": "^1.20.3",
-    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.21.0",
-    "express-rate-limit": "^7.4.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.2.0",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "mysql2": "^3.1.2",
+    "knex": "^3.1.0",
+    "objection": "^3.1.5",
+    "tsnd": "^1.1.0"
   }
 }
