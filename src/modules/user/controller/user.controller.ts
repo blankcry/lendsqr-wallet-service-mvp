@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
-import {userCreationRequestSchema} from './schema';
-import {UserCreationDTO} from './interface';
-import userService from './user.service';
+import {userCreationRequestSchema} from '../schema';
+import {UserCreationDTO} from '../interface';
+import userService from '../user.service';
 
 export default {
   create: async (request: Request, response: Response, next: NextFunction) => {

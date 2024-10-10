@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
-import walletService from './wallet.service';
+import walletService from '../service/wallet.service';
 
 export default {
   get: async (request: Request, response: Response, next: NextFunction) => {

@@ -1,8 +1,8 @@
 import {Request, Response, NextFunction} from 'express';
-import {WalletPostPayloadSchema} from './schema';
-import {PostPayloadDTO} from './interface';
+import {WalletPostPayloadSchema} from '../schema';
+import {PostPayloadDTO} from '../interface';
 import {capitalize} from 'lodash';
-import postsService from './posts.service';
+import postsService from '../service/post.service';
 
 export default {
   create: async (request: Request, response: Response, next: NextFunction) => {

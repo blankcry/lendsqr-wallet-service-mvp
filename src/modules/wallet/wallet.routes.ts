@@ -1,6 +1,6 @@
-import {validateToken} from '../middleware/auth.middleware';
-import postController from '../modules/wallet/post.controller';
-import walletController from '../modules/wallet/wallet.controller';
+import {validateToken} from '../../middleware/auth.middleware';
+import postController from './controller/post.controller';
+import walletController from './controller/wallet.controller';
 import {Application, Router} from 'express';
 
 const router: Router = Router();

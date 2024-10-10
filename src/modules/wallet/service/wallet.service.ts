@@ -1,7 +1,7 @@
-import configuration from '../../config/business';
-import {Wallet} from '../../db/models';
+import configuration from '../../../config/business';
+import {Wallet} from '../../../db/models';
 import {Transaction} from 'objection';
-import {NotFoundError} from '../../error';
+import {NotFoundError} from '../../../error';
 
 class WalletService {
   async createWallet(user_id: number, currency: string, trx: Transaction) {

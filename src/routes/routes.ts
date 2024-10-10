@@ -1,6 +1,6 @@
 import {Router, Request, Response} from 'express';
-import userRoutes from './user.routes';
-import walletRoutes from './wallet.routes';
+import userRoutes from '../modules/user/user.routes';
+import walletRoutes from '../modules/wallet/wallet.routes';
 
 const router: Router = Router();
 

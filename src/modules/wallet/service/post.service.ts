@@ -1,4 +1,4 @@
-import {Post, Wallet, WalletLedger} from '../../db/models';
+import {Post, Wallet, WalletLedger} from '../../../db/models';
 import {Transaction} from 'objection';
 import {
   PostHandler,
@@ -6,11 +6,11 @@ import {
   PostPayloadDTO,
   PostTreatmentEnum,
   PostStatusEnum,
-} from './interface';
-import {UnprocessableError} from '../../error';
+} from '../interface';
+import {UnprocessableError} from '../../../error';
 import walletService from './wallet.service';
 import {PostCreationI} from '@src/db/models/post/interface';
-import WalletUtils from './util';
+import WalletUtils from '../util';
 import {WalletLedgerCreationI} from '@src/db/models/wallet/interface';
 
 class PostService {

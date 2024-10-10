@@ -2,7 +2,7 @@ import express, {Application} from 'express';
 import cors from 'cors';
 import logger from 'morgan';
 
-import router from './routes/index.routes';
+import router from './routes/routes';
 import {GlobalErrorHandler} from './middleware/error.middleware';
 import './db/knex';
 

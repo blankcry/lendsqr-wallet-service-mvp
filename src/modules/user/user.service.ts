@@ -3,7 +3,7 @@ import {UserCreationDTO} from './interface';
 import {NotFoundError, UnprocessableError} from '../../error';
 import UserUtil from './util';
 import {User} from '../../db/models';
-import walletService from '../wallet/wallet.service';
+import walletService from '../wallet/service/wallet.service';
 
 class UserService {
   async createUser(payload: UserCreationDTO) {
