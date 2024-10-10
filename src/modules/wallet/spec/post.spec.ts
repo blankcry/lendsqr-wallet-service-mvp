@@ -68,4 +68,37 @@ describe('Wallet Service Routes', () => {
       expect(response.body.data).toHaveProperty('status', 'SUCCESS');
     });
   });
+  describe('POST /wallet/transfer', () => {
+    it('Transfer funds between wallets should fail', async () => {
+      // const recipientId = 2; // Assume recipientId 2 exists
+      const response = await request(app)
+        .post('/wallet/transfer')
+        .send({
+          amount: 100000,
+          recipient_id,
+        })
+        .set('Authorization', `Bearer ${token}`); // Assuming you have token auth
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty(
+        'message',
+        'Insufficient Wallet Balance'
+      );
+    });
+  });
+  // // Test for withdrawing funds
+  describe('POST /wallet/withdraw', () => {
+    it('Withdraw funds from the user wallet should fail', async () => {
+      const response = await request(app)
+        .post('/wallet/withdraw')
+        .send({
+          amount: 100000,
+        })
+        .set('Authorization', `Bearer ${token}`); // Assuming you have token auth
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty(
+        'message',
+        'Insufficient Wallet Balance'
+      );
+    });
+  });
 });
