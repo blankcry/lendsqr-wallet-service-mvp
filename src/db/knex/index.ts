@@ -8,7 +8,7 @@ const {
 const knex = Knex({
   client,
   connection: connectionUrl,
-  debug: true,
+  debug: false,
   migrations: {
     directory: './migrations',
     extension: 'ts', // Use TypeScript files for migrations

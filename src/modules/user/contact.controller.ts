@@ -6,7 +6,7 @@ export default {
     try {
       const {id} = request.user;
       const data = await userService.getContacts(id);
-      return response.status(201).json({
+      return response.status(200).json({
         message: 'Contacts list Fetched',
         data,
       });
